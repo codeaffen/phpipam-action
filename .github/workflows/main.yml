@@ -1,0 +1,10 @@
+name: run phpipam-action
+on: [push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run phpipam-action
+        uses: codeaffen/phpipam-action@latest
