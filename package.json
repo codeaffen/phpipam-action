@@ -8,7 +8,7 @@
         "github-action"
     ],
     "author": "",
-    "license": "ISC",
+    "license": "GPLv3",
     "dependencies": {
         "@actions/core": "^1.6.0",
         "@actions/github": "^5.0.0",
