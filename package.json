@@ -1,9 +1,19 @@
 {
-  "dependencies": {
-    "@actions/core": "^1.6.0",
-    "@actions/github": "^5.0.0",
-    "docker-compose": "^0.23.14",
-    "fs": "^0.0.1-security",
-    "js-yaml": "^4.1.0"
-  }
+    "name": "phpipam-action",
+    "version": "0.0.1",
+    "description": "phpipam-action",
+    "main": "main.js",
+    "keywords": [
+        "phpipam",
+        "github-action"
+    ],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@actions/core": "^1.6.0",
+        "@actions/github": "^5.0.0",
+        "docker-compose": "^0.23.14",
+        "fs": "^0.0.1-security",
+        "js-yaml": "^4.1.0"
+    }
 }
