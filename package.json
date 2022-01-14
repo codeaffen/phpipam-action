@@ -2,7 +2,7 @@
     "name": "phpipam-action",
     "version": "0.0.1",
     "description": "phpipam-action",
-    "main": "main.js",
+    "main": "index.js",
     "keywords": [
         "phpipam",
         "github-action"
