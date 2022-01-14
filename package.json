@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "docker-compose": "^0.23.14",
+    "fs": "^0.0.1-security",
+    "js-yaml": "^4.1.0"
+  }
+}

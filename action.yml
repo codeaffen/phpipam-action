@@ -1,0 +1,30 @@
+name: 'PHPIPAM Action'
+description: 'Spin up a PHPIPAM instance'
+inputs:
+  ipam_database_host:
+    description: 'database host phpipam connects to'
+    required: false
+    default: "database"
+  ipam_database_user:
+    description: 'database user phpipam needs to authenticate'
+    required: false
+    default: "phpipam"
+  ipam_database_pass:
+    description: 'database password phpipam needs to authenticate'
+    required: false
+    default: "phpipamadmin"
+  ipam_database_name:
+    description: 'database name phpipam uses'
+    required: false
+    default: "phpipam"
+  database_root_password:
+    description: 'root password for the database'
+    required: false
+    default: "rootpw"
+runs:
+  using: 'node16'
+  main: 'main.js'
+  # post: 'post.js'
+branding:
+  icon: package
+  color: gray-dark
