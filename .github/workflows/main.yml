@@ -1,4 +1,4 @@
-name: run phpipam-action
+name: CI
 on: [push]
 
 jobs:
