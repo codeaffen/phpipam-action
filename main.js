@@ -6,7 +6,7 @@ const yaml = require('js-yaml');
 const myArgs = process.argv.slice(2);
 
 const composeFile = './services/docker-compose.yml';
-const services_exec = './services/exec.yml';
+const execFile = './services/exec.yml';
 
 async function up() {
     try {
@@ -20,9 +20,9 @@ async function up() {
     }
 }
 
-function down() {
+async function down() {
     try {
-        compose.down({ config: composeFile, log: false })
+        await compose.down({ config: composeFile, log: false })
             .then(
                     () => { console.log('compose down')},
                     err => { core.setFailed(`compose down failed ${err}`)}
@@ -34,10 +34,10 @@ function down() {
 
 async function init() {
 
-    if (!fs.existsSync(services_exec)) {
+    if (!fs.existsSync(execFile)) {
         console.log('exec.yml not found');
     } else {
-        let container_commands = yaml.load(fs.readFileSync(services_exec, 'utf8'));
+        let container_commands = yaml.load(fs.readFileSync(execFile, 'utf8'));
 
         for(const cc of container_commands['exec_list']) {
             try {

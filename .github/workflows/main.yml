@@ -8,3 +8,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: run phpipam-action
         uses: ./ # use action in the root directory
+      - name: "Test phpipam api"
+        run: |
+          curl -k --user Admin:ipamadmin -X POST https://localhost/api/ansible/user/
