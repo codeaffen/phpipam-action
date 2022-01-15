@@ -7,6 +7,9 @@
         "phpipam",
         "github-action"
     ],
+    "scripts": {
+        "build": "ncc build main.js --license LICENSE"
+    },
     "author": "",
     "license": "GPLv3",
     "dependencies": {
