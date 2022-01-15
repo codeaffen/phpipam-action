@@ -2,11 +2,12 @@ const core = require('@actions/core');
 const compose = require('docker-compose');
 const fs = require('fs');
 const yaml = require('js-yaml');
+const { exit } = require('process');
 
 const myArgs = process.argv.slice(2);
 
-const composeFile = './services/docker-compose.yml';
-const execFile = './services/exec.yml';
+const composeFile = `${__dirname}/services/docker-compose.yml`;
+const execFile = `${__dirname}/services/exec.yml`;
 
 async function up() {
     try {
@@ -53,9 +54,10 @@ async function init() {
     }
 }
 
-if (!fs.existsSync(composeFile)) {
-    console.log(`${composeFile} not exists`);
-    return
+try {
+    fs.existsSync(composeFile)
+} catch (error) {
+    core.setFailed(error.message);
 }
 
 switch (myArgs[0]) {
