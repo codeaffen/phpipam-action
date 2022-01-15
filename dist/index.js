@@ -6238,14 +6238,6 @@ module.exports = require("path");
 
 /***/ }),
 
-/***/ 7282:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("process");
-
-/***/ }),
-
 /***/ 4404:
 /***/ ((module) => {
 
@@ -12938,7 +12930,6 @@ const core = __nccwpck_require__(7348);
 const compose = __nccwpck_require__(807);
 const fs = __nccwpck_require__(7147);
 const yaml = __nccwpck_require__(9299);
-const { exit } = __nccwpck_require__(7282);
 
 const myArgs = process.argv.slice(2);
 
@@ -12969,11 +12960,20 @@ async function down() {
     }
 }
 
+async function execInContainer(container, commands, options={}) {
+    for(const c of commands)
+    {
+        await compose.exec(container, c, options);
+    }
+}
+
 async function init() {
 
+    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
     if (!fs.existsSync(__nccwpck_require__.ab + "exec.yml")) {
         core.info("exec.yml not found");
     } else {
+        /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
         let containerCommands = yaml.load(fs.readFileSync(__nccwpck_require__.ab + "exec.yml", "utf8"));
 
         for(const cc of containerCommands["exec_list"]) {
@@ -12987,14 +12987,8 @@ async function init() {
     }
 }
 
-async function execInContainer(container, commands, options={}) {
-    for(const c of commands)
-    {
-        await compose.exec(container, c, options);
-    }
-}
-
 try {
+    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
     fs.existsSync(__nccwpck_require__.ab + "docker-compose.yml");
 } catch (error) {
     core.setFailed(error.message);

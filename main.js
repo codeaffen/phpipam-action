@@ -41,6 +41,7 @@ async function execInContainer(container, commands, options={}) {
 
 async function init() {
 
+    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
     if (!fs.existsSync(execFile)) {
         core.info("exec.yml not found");
     } else {
