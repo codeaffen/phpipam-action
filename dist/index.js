@@ -12949,8 +12949,8 @@ async function up() {
     try {
         await compose.upAll({ config: __nccwpck_require__.ab + "docker-compose.yml", log: false })
             .then(
-                    () => { console.log('compose started')},
-                    err => { core.setFailed(`compose up failed ${err}`)}
+                    () => { core.info("compose started"); },
+                    (err) => { core.setFailed(`compose up failed ${err}`); }
                     );
     } catch (error) {
         core.setFailed(error.message);
@@ -12961,8 +12961,8 @@ async function down() {
     try {
         await compose.down({ config: __nccwpck_require__.ab + "docker-compose.yml", log: false })
             .then(
-                    () => { console.log('compose down')},
-                    err => { core.setFailed(`compose down failed ${err}`)}
+                    () => { core.info("compose down"); },
+                    (err) => { core.setFailed(`compose down failed ${err}`); }
                     );
     } catch (error) {
         core.setFailed(error.message);
@@ -12972,17 +12972,14 @@ async function down() {
 async function init() {
 
     if (!fs.existsSync(__nccwpck_require__.ab + "exec.yml")) {
-        console.log('exec.yml not found');
+        core.info("exec.yml not found");
     } else {
-        let container_commands = yaml.load(fs.readFileSync(__nccwpck_require__.ab + "exec.yml", 'utf8'));
+        let containerCommands = yaml.load(fs.readFileSync(__nccwpck_require__.ab + "exec.yml", "utf8"));
 
-        for(const cc of container_commands['exec_list']) {
+        for(const cc of containerCommands["exec_list"]) {
             try {
-                console.log(`executing "${cc.name}" inside "${cc.container}"`);
-                for(const c of cc['commands'])
-                {
-                    await compose.exec(cc.container, c, { config: __nccwpck_require__.ab + "docker-compose.yml", log: true })
-                }
+                core.info(`executing "${cc.name}" inside "${cc.container}"`);
+                execInContainer(cc.container, cc.commands, { config: __nccwpck_require__.ab + "docker-compose.yml", log: false });
             } catch (error) {
                 core.setFailed(error.message);
             }
@@ -12990,30 +12987,33 @@ async function init() {
     }
 }
 
+async function execInContainer(container, commands, options={}) {
+    for(const c of commands)
+    {
+        await compose.exec(container, c, options);
+    }
+}
+
 try {
-    fs.existsSync(__nccwpck_require__.ab + "docker-compose.yml")
+    fs.existsSync(__nccwpck_require__.ab + "docker-compose.yml");
 } catch (error) {
     core.setFailed(error.message);
 }
 
 switch (myArgs[0]) {
-    case 'up': {
+    case "up":
         up();
         break;
-    }
-    case 'init': {
+    case "init":
         init();
         break;
-    }
-    case 'down': {
+    case "down":
         down();
         break;
-    }
-    default: {
-        console.log('staring phpipam in action mode')
+    default:
+        core.info("staring phpipam in action mode");
         up();
         setTimeout(init, 30000);
-    }
 }
 
 })();

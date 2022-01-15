@@ -1,8 +1,7 @@
-const core = require('@actions/core');
-const compose = require('docker-compose');
-const fs = require('fs');
-const yaml = require('js-yaml');
-const { exit } = require('process');
+const core = require("@actions/core");
+const compose = require("docker-compose");
+const fs = require("fs");
+const yaml = require("js-yaml");
 
 const myArgs = process.argv.slice(2);
 
@@ -13,8 +12,8 @@ async function up() {
     try {
         await compose.upAll({ config: composeFile, log: false })
             .then(
-                    () => { console.log('compose started')},
-                    err => { core.setFailed(`compose up failed ${err}`)}
+                    () => { core.info("compose started"); },
+                    (err) => { core.setFailed(`compose up failed ${err}`); }
                     );
     } catch (error) {
         core.setFailed(error.message);
@@ -25,28 +24,33 @@ async function down() {
     try {
         await compose.down({ config: composeFile, log: false })
             .then(
-                    () => { console.log('compose down')},
-                    err => { core.setFailed(`compose down failed ${err}`)}
+                    () => { core.info("compose down"); },
+                    (err) => { core.setFailed(`compose down failed ${err}`); }
                     );
     } catch (error) {
         core.setFailed(error.message);
     }
 }
 
+async function execInContainer(container, commands, options={}) {
+    for(const c of commands)
+    {
+        await compose.exec(container, c, options);
+    }
+}
+
 async function init() {
 
     if (!fs.existsSync(execFile)) {
-        console.log('exec.yml not found');
+        core.info("exec.yml not found");
     } else {
-        let container_commands = yaml.load(fs.readFileSync(execFile, 'utf8'));
+        /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
+        let containerCommands = yaml.load(fs.readFileSync(execFile, "utf8"));
 
-        for(const cc of container_commands['exec_list']) {
+        for(const cc of containerCommands["exec_list"]) {
             try {
-                console.log(`executing "${cc.name}" inside "${cc.container}"`);
-                for(const c of cc['commands'])
-                {
-                    await compose.exec(cc.container, c, { config: composeFile, log: true })
-                }
+                core.info(`executing "${cc.name}" inside "${cc.container}"`);
+                execInContainer(cc.container, cc.commands, { config: composeFile, log: false });
             } catch (error) {
                 core.setFailed(error.message);
             }
@@ -55,27 +59,24 @@ async function init() {
 }
 
 try {
-    fs.existsSync(composeFile)
+    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
+    fs.existsSync(composeFile);
 } catch (error) {
     core.setFailed(error.message);
 }
 
 switch (myArgs[0]) {
-    case 'up': {
+    case "up":
         up();
         break;
-    }
-    case 'init': {
+    case "init":
         init();
         break;
-    }
-    case 'down': {
+    case "down":
         down();
         break;
-    }
-    default: {
-        console.log('staring phpipam in action mode')
+    default:
+        core.info("staring phpipam in action mode");
         up();
         setTimeout(init, 30000);
-    }
 }
