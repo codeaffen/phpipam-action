@@ -7,4 +7,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: run phpipam-action
-        uses: codeaffen/phpipam-action@latest
+        uses: ./ # use action in the root directory
