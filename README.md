@@ -4,7 +4,7 @@ This action Spin up a PHPIPAM instance for api testing purpose in github workflo
 
 ## Inputs
 
-**note** Input parameters are not used yet in our action. There are for future use. We need to work on that feature.
+**note** Input parameters are not used yet in our action. They are for future use. We need to work on that feature.
 
 ### `ipam_database_host`
 
