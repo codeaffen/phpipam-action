@@ -22,8 +22,8 @@ inputs:
     required: false
     default: "rootpw"
 runs:
-  using: 'node16'
-  main: 'main.js'
+  using: 'node12'
+  main: 'dist/index.js'
   # post: 'post.js'
 branding:
   icon: package
