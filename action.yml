@@ -1,6 +1,10 @@
 name: 'phpIPAM Action'
 description: 'Spin up a phpIPAM instance'
 inputs:
+  ipam_version:
+    description: 'phpIPAM version to install'
+    required: false
+    default: 'latest'
   ipam_database_host:
     description: 'database host phpipam connects to'
     required: false

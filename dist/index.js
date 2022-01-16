@@ -12963,6 +12963,7 @@ async function down() {
 async function execInContainer(container, commands, options={}) {
     for(const c of commands)
     {
+        core.debug(`executing "${c}" inside "${container}"`);
         await compose.exec(container, c, options);
     }
 }
@@ -12994,6 +12995,13 @@ try {
     core.setFailed(error.message);
 }
 
+process.env.PHPIPAM_VERSION = core.getInput("phpipam_version");
+process.env.PHPIPAM_DATABASE_HOST = core.getInput("phpipam_database_host");
+process.env.PHPIPAM_DATABASE_USER = core.getInput("phpipam_database_user");
+process.env.PHPIPAM_DATABASE_PASS = core.getInput("phpipam_database_pass");
+process.env.PHPIPAM_DATABASE_NAME = core.getInput("phpipam_database_name");
+process.env.MYSQL_ROOT_PASSWORD = core.getInput("database_root_password");
+
 switch (myArgs[0]) {
     case "up":
         up();
@@ -13005,7 +13013,7 @@ switch (myArgs[0]) {
         down();
         break;
     default:
-        core.info("staring phpipam in action mode");
+        core.info(`staring phpipam (${process.env.PHPIPAM_VERSION}) in action mode`);
         up();
         setTimeout(init, 30000);
 }
