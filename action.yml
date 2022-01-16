@@ -1,5 +1,5 @@
-name: 'PHPIPAM Action'
-description: 'Spin up a PHPIPAM instance'
+name: 'phpIPAM Action'
+description: 'Spin up a phpIPAM instance'
 inputs:
   ipam_database_host:
     description: 'database host phpipam connects to'
