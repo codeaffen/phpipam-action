@@ -1,14 +1,14 @@
 version: '3'
 services:
   phpipam:
-    image: phpipam/phpipam-www:v1.4.4
+    image: phpipam/phpipam-www:${IPAM_VERSION:-1.4x}
     ports:
       - "443:443"
     environment:
-      IPAM_DATABASE_HOST: "database"
-      IPAM_DATABASE_USER: "phpipam"
-      IPAM_DATABASE_PASS: "phpipamadmin"
-      IPAM_DATABASE_NAME: "phpipam"
+      IPAM_DATABASE_HOST: "${IPAM_DATABASE_HOST:-database}"
+      IPAM_DATABASE_USER: "${IPAM_DATABASE_USER:-phpipam}"
+      IPAM_DATABASE_PASS: "${IPAM_DATABASE_PASS:-phpipamadmin}"
+      IPAM_DATABASE_NAME: "${IPAM_DATABASE_NAME:-phpipam}"
     depends_on:
       - database
   database:
@@ -16,7 +16,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: "rootpw"
-      MYSQL_USER: "phpipam"
-      MYSQL_PASSWORD: "phpipamadmin"
-      MYSQL_DATABASE: "phpipam"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-rootpw}"
+      MYSQL_USER: "${IPAM_DATABASE_USER:-phpipam}"
+      MYSQL_PASSWORD: "${IPAM_DATABASE_PASS:-phpipamadmin}"
+      MYSQL_DATABASE: "${IPAM_DATABASE_NAME:-phpipam}"
