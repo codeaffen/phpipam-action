@@ -49,14 +49,16 @@ If the action finishes successfully you will be able to run your api tests again
 
 ~~~yaml
 - name: "Test phpipam api"
-        run: |
-          curl -k --user Admin:ipamadmin -X POST https://localhost/api/ansible/user/
+  run: |
+    curl -k --user Admin:ipamadmin -X POST https://localhost/api/ansible/user/
 ~~~
 
 With the `ipam_version` parameter you will be able to test against different phpipam versions by using githubs build matrix feature. This is done by defining a job as follows:
 
 ~~~yaml
-strategy:
+jobs:
+  matrix_test:
+    strategy:
       matrix:
         phpipam: ['1.4x','1.5x']
     steps:
