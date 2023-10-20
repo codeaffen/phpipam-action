@@ -35,18 +35,19 @@ async function down() {
 async function execInContainer(container, commands, options={}) {
     for(const c of commands)
     {
-        core.debug(`executing "${c}" inside "${container}"`);
-        await compose.exec(container, c, options);
+        try {
+            await compose.exec(container, c, options);
+        } catch (error) {
+            core.setFailed(error.err);
+        }
     }
 }
 
 async function init() {
 
-    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
     if (!fs.existsSync(execFile)) {
         core.info("exec.yml not found");
     } else {
-        /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
         let containerCommands = yaml.load(fs.readFileSync(execFile, "utf8"));
 
         for(const cc of containerCommands["exec_list"]) {
@@ -61,7 +62,6 @@ async function init() {
 }
 
 try {
-    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
     fs.existsSync(composeFile);
 } catch (error) {
     core.setFailed(error.message);

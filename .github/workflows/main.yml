@@ -33,14 +33,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        phpipam: ['1.4x','1.5x']
+        phpipam: ['v1.4x','v1.5x']
     steps:
       - uses: actions/checkout@v2
-      - name: run phpipam-action
+      - name: Run phpipam-action
         uses: ./ # use action in the root directory
         with:
           ipam_version: ${{ matrix.phpipam }}
-      - name: "Test phpipam api and database"
+      - name: "Test phpipam api"
         run: |
           curl -k --user Admin:ipamadmin -X POST https://localhost/api/ansible/user/
+      - name: "Test database"
+        run: |
           mysql -h 127.0.01 -u ${{ env.IPAM_DATABASE_USER }} -p${{ env.IPAM_DATABASE_PASS }} ${{ env.IPAM_DATABASE_NAME }} --execute="SHOW TABLES"
