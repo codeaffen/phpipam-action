@@ -15,6 +15,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
+      - name: Upgrade docker stuff
+        run: sudo apt-get install --upgrade docker-compose
       - uses: actions/checkout@v2
       - name: run phpipam-action
         uses: ./ # use action in the root directory
@@ -35,6 +37,8 @@ jobs:
       matrix:
         phpipam: ['v1.4x','v1.5x']
     steps:
+      - name: Upgrade docker stuff
+        run: sudo apt-get install --upgrade docker-compose
       - uses: actions/checkout@v2
       - name: Run phpipam-action
         uses: ./ # use action in the root directory
